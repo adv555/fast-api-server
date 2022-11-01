@@ -1,0 +1,2 @@
+postgres:
+  url: postgresql+psycopg2://pemqitus:Of10urEaHUKhsK_RiJrvIO18r6lyZpKj@lucky.db.elephantsql.com/pemqitus
