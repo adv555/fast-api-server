@@ -1,20 +1,25 @@
-async def get_posts():
-    all_posts = {}
-    return all_posts
+from sqlalchemy.orm import Session
+from src.models import Post, Author
 
 
-async def find_post_by_id(post_id: int):
+async def get_posts(db: Session):
+    posts = db.query(Post).all()
+    return posts
+
+
+async def find_post_by_id(db: Session, post_id: int):
     post = {}
 
     return post
 
-async def create_post(post: dict):
-    pass
 
-async def update_post(post_id: int):
-    pass
-
-async def delete_post(post_id: int):
+async def create_post(db: Session, post: dict):
     pass
 
 
+async def update_post(db: Session, post_id: int, post: dict):
+    pass
+
+
+async def delete_post(db: Session, post_id: int):
+    pass
