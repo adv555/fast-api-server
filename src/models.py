@@ -25,13 +25,13 @@ class Post(Base):
     author = relationship("Author", secondary=news_author, back_populates="post")
     # user = Column('user_id', ForeignKey('users.id', ondelete="CASCADE"), default=None)
 
+
 class Author(Base):
     __tablename__ = "author"
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False, unique=True)
     created_at = Column(DateTime, default=datetime.now())
     post = relationship("Post", secondary=news_author, back_populates="author")
-
 
 # class User(Base):
 #     __tablename__ = "users"
