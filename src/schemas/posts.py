@@ -6,8 +6,8 @@ from pydantic import BaseModel, Field
 
 class Author(BaseModel):
     id: int
-    name: str = Field(max_length=50)
-    created_at: datetime = Field(default_factory=datetime.now)
+    name: str
+    created_at: datetime
 
     class Config:
         orm_mode = True
@@ -36,9 +36,9 @@ class PostList(BaseModel):
 class CreatePost(BaseModel):
     img_url: str = Field(max_length=250, nullable=True, default=None)
     title: str = Field(max_length=150)
-    content: str
-    date: str
-    author: str
+    content: str = Field(max_length=2000)
+    date: str = Field(max_length=50)
+    author: str = Field(max_length=50)
 
     class Config:
         schema_extra = {
@@ -52,17 +52,19 @@ class CreatePost(BaseModel):
         }
 
 
-
 class UpdatePost(BaseModel):
-    img_url: Optional[str] = None
-    title: Optional[str] = Field(max_length=150)
-    content: Optional[str] = Field(max_length=2000)
-    date: Optional[str] = Field(max_length=50)
+    img_url: Optional[str]
+    title: Optional[str]
+    content: Optional[str]
 
-# class PostResponse(Post):
-#     id: int
-#     created: datetime
-#
-#     class Config:
-#         orm_mode = True
-#
+
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "img_url": "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50",
+                "title": "My updated title",
+                "content": "This is my updated post",
+
+            }
+        }

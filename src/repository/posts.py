@@ -14,12 +14,7 @@ async def find_post_by_id(db: Session, post_id: int):
 
 
 async def create_post(db: Session, post: CreatePost):
-    author = db.query(Author).filter(Author.name == post.author).first()
-    if not author:
-        author = Author(name=post.author)
-        db.add(author)
-        db.commit()
-        db.refresh(author)
+    author = await create_author(db, post.author)
     new_post = Post(title=post.title, content=post.content, date=post.date, img_url=post.img_url)
     new_post.author = [author]
     db.add(new_post)
@@ -28,17 +23,21 @@ async def create_post(db: Session, post: CreatePost):
     return new_post
 
 
-
 async def update_post(db: Session, post_id: int, post: UpdatePost):
     updated_post = db.query(Post).filter(Post.id == post_id).first()
     if updated_post:
-        updated_post.title = post["title"]
-        updated_post.content = post["content"]
-        updated_post.date = post["date"]
-        updated_post.img_url = post["img_url"]
+        if post.title:
+            updated_post.title = post.title
+        if post.content:
+            updated_post.content = post.content
+        if post.img_url:
+            updated_post.img_url = post.img_url
+
         db.commit()
         db.refresh(updated_post)
+
     return updated_post
+
 
 async def delete_post(db: Session, post_id: int):
     post = db.query(Post).filter(Post.id == post_id).first()
@@ -47,4 +46,19 @@ async def delete_post(db: Session, post_id: int):
         db.commit()
 
     return post
+
+
+async def create_author(db: Session, author_name: str):
+    author = db.query(Author).filter(Author.name == author_name).first()
+    if not author:
+        author = Author(name=author.name)
+        db.add(author)
+        db.commit()
+        db.refresh(author)
+    return author
+
+
+
+
+
 

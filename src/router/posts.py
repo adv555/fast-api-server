@@ -26,7 +26,7 @@ async def get_post_by_id(post_id: int, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"News {post_id} not found",
         )
-    return {"post": post_id}
+    return post
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=Post)
@@ -35,7 +35,7 @@ async def create_new_post(post: CreatePost,  db: Session = Depends(get_db)):
     return new_post
 
 
-@router.put("/{post_id}", response_model=Post)
+@router.patch("/{post_id}", response_model=Post)
 async def update_post_by_id(post_id: int, post: UpdatePost, db: Session = Depends(get_db)):
     updated_post = await update_post(db, post_id, post)
     if not updated_post:
@@ -43,7 +43,7 @@ async def update_post_by_id(post_id: int, post: UpdatePost, db: Session = Depend
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"News {post_id} not found",
         )
-    return {"msg": "News updated", "post": updated_post}
+    return updated_post
 
 
 @router.delete("/{post_id}")
