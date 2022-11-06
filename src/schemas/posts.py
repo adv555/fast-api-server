@@ -40,6 +40,9 @@ class CreatePost(BaseModel):
     date: str = Field(max_length=50)
     author: str = Field(max_length=50)
 
+    # def __getitem__(self, item):
+    #     return getattr(self, item)
+
     class Config:
         schema_extra = {
             "example": {

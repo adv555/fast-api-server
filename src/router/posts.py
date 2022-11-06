@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 
 from db.connect import get_db
 from src.repository.posts import get_posts, find_post_by_id, create_post, update_post, delete_post
-from src.schemas.posts import Post, UpdatePost, PostList, CreatePost, CreateAuthor
+from src.schemas.posts import Post, UpdatePost, PostList, CreatePost
+
 
 router = APIRouter(prefix="/posts", tags=["posts"])
 
@@ -13,7 +14,6 @@ router = APIRouter(prefix="/posts", tags=["posts"])
 @router.get("/", response_model=PostList)
 async def get_all_posts(db: Session = Depends(get_db), skip: int = 0,
                         limit: int = Query(10, gt=1, le=100)):
-
     posts = await get_posts(db, skip, limit)
     return posts
 
@@ -30,7 +30,7 @@ async def get_post_by_id(post_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=Post)
-async def create_new_post(post: CreatePost,  db: Session = Depends(get_db)):
+async def create_new_post(post: CreatePost, db: Session = Depends(get_db)):
     new_post = await create_post(db, post)
     return new_post
 
